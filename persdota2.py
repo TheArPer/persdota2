@@ -4,10 +4,10 @@ from aiogram import Bot, Dispatcher, types, F
 from aiogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.enums import ParseMode
 
-# 🔐 Вставь свой токен ниже
+
 TOKEN = '7219163362:AAHjbwOduZRMcgjKc7uP33xMLMbZgjSbpeQ'
 
-# Список героев без сленга
+
 heroes = [
     "Abaddon", "Alchemist", "Ancient Apparition", "Anti-Mage", "Arc Warden", "Axe", "Bane", "Batrider",
     "Beastmaster", "Bloodseeker", "Bounty Hunter", "Brewmaster", "Bristleback", "Broodmother", "Centaur Warrunner",
@@ -27,18 +27,18 @@ heroes = [
     "Witch Doctor", "Wraith King"
 ]
 
-# 🔘 Кнопка
+
 def get_check_button():
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="🔮 Проверить, кто я из Dota 2", callback_data="check_hero")]
     ])
     return keyboard
 
-# 🚀 Инициализация
+
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
-# 🟢 Команда /start
+
 @dp.message(F.text == "/start")
 async def start(message: Message):
     await message.answer(
@@ -46,14 +46,14 @@ async def start(message: Message):
         reply_markup=get_check_button()
     )
 
-# 🎲 Ответ на кнопку
+
 @dp.callback_query(F.data == "check_hero")
 async def check_hero(callback: types.CallbackQuery):
     hero = random.choice(heroes)
     await callback.message.answer(f"🧝 Ты — *{hero}*!", parse_mode=ParseMode.MARKDOWN, reply_markup=get_check_button())
     await callback.answer()  # Закрыть "загрузка..." в Telegram
 
-# 🏁 Запуск бота
+
 async def main():
     await dp.start_polling(bot)
 
